@@ -1,19 +1,8 @@
 from django.db import models
 from datetime import datetime, timedelta
 # Create your models here.
-## Cadastro de Clientes     
-class Client(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=200)
-    phone = models.CharField(max_length=15)
-    
-    def __str__(self):
-        return "{} - {}".format(self.name, self.email)
-    
-    class Meta:
-        verbose_name = 'Cliente'
-        verbose_name_plural = 'Clientes'
-        ordering = ['-id']
+  
+
 
 ## Opções de Imóveis
 class TypeItem(models.TextChoices):
@@ -51,7 +40,7 @@ class ItemImage(models.Model):
 # Registrar Reserva - adaptação original
 class RegisterReservation(models.Model):
         item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='reg_reservation')
-        client = models.ForeignKey(Client, on_delete=models.CASCADE)
+        #client = models.ForeignKey(Client, on_delete=models.CASCADE)
         booking_date = models.DateTimeField('Data')
         create_at = models.DateField(default=datetime.now, blank=True)
     
@@ -62,3 +51,19 @@ class RegisterReservation(models.Model):
             verbose_name = 'Registrar Reserva'
             verbose_name_plural = 'Registrar Reservas'
             ordering = ['-id']
+
+
+# Cadastro de Clientes   
+class Client(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=200)
+    phone = models.CharField(max_length=15)
+    reservation = models.ForeignKey(RegisterReservation, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return "{} - {}".format(self.name, self.email)
+    
+    class Meta:
+        verbose_name = 'Cliente'
+        verbose_name_plural = 'Clientes'
+        ordering = ['-id']
