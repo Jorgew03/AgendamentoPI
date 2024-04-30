@@ -13,7 +13,10 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">	
 </head>
 <body>  
-	
+	{% include 'navbar.html' %}
+
+	{% include 'message.html' %}
+
 	{% block content %}
 	
 	{% endblock %} 
