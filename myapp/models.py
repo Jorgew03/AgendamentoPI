@@ -1,10 +1,9 @@
 from django.db import models
-from datetime import datetime, timedelta
-# Create your models here.
-  
+from datetime import datetime
+# Create your models here. 
 
 
-## Opções de Imóveis
+## Opções de Itens
 class TypeItem(models.TextChoices):
     BLOUSE = 'BLUSA','BLUSA'
     PANTS = 'CALCA','CALCA'
@@ -12,7 +11,7 @@ class TypeItem(models.TextChoices):
     DRESS = 'VESTIDO', 'VESTIDO'
     TSHIRT = 'CAMISETA', 'CAMISETA'
 
-## Cadastro de Imóveis
+## Cadastro de Itens
 class Item(models.Model):
     code = models.CharField(max_length=100)
     type_item = models.CharField(max_length=100, choices=TypeItem.choices)
@@ -29,7 +28,7 @@ class Item(models.Model):
         verbose_name_plural = 'Itens'
         ordering = ['-id']
 
-## Cadastrar as Imagens do Imóvel
+## Cadastrar as Imagens do Item
 class ItemImage(models.Model):
     image = models.ImageField('Images',upload_to='images')
     item = models.ForeignKey(Item, related_name='item_images', on_delete=models.CASCADE)
@@ -37,33 +36,19 @@ class ItemImage(models.Model):
     def __str__(self):
         return self.item.code # form key
     
-# Registrar Reserva - adaptação original
+# Registrar Reserva - adaptação final:
 class RegisterReservation(models.Model):
-        item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='reg_reservation')
-        #client = models.ForeignKey(Client, on_delete=models.CASCADE)
-        booking_date = models.DateTimeField('Data')
-        create_at = models.DateField(default=datetime.now, blank=True)
-    
-        def __str__(self):
-            return "{} - {}".format(self.client, self.item)
-    
-        class Meta:
-            verbose_name = 'Registrar Reserva'
-            verbose_name_plural = 'Registrar Reservas'
-            ordering = ['-id']
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='reg_reservation')
+    booking_date = models.DateTimeField('Data')
+    create_at = models.DateField(default=datetime.now, blank=True)
+    name = models.CharField(max_length=100, blank=False, null=False)   
+    email = models.EmailField(max_length=200, blank=True, null=True)   
+    phone = models.CharField(max_length=15, blank=False, null=False)   
 
-
-# Cadastro de Clientes   
-class Client(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=200)
-    phone = models.CharField(max_length=15)
-    reservation = models.ForeignKey(RegisterReservation, on_delete=models.CASCADE, null=True)
-    
     def __str__(self):
-        return "{} - {}".format(self.name, self.email)
-    
+        return "{}".format(self.item)
+
     class Meta:
-        verbose_name = 'Cliente'
-        verbose_name_plural = 'Clientes'
+        verbose_name = 'Registrar Reserva'
+        verbose_name_plural = 'Registrar Reservas'
         ordering = ['-id']
