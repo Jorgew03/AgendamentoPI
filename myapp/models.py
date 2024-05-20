@@ -52,3 +52,20 @@ class RegisterReservation(models.Model):
         verbose_name = 'Registrar Reserva'
         verbose_name_plural = 'Registrar Reservas'
         ordering = ['-id']
+
+# Registrar Agendamento
+class RegisterAppointment(models.Model): #Registrar agendamento
+    booking_date = models.DateTimeField('Data')
+    create_at = models.DateField(default=datetime.now, blank=True)
+    name = models.CharField(max_length=100, blank=False, null=False)   
+    email = models.EmailField(max_length=200, blank=True, null=True)   
+    phone = models.CharField(max_length=15, blank=False, null=False)   
+    comments = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+    class Meta:
+        verbose_name = 'Registrar Agendamento'
+        verbose_name_plural = 'Registrar Agendamentos'
+        ordering = ['-id']
